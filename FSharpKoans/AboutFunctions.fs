@@ -79,28 +79,28 @@ module ``03: Putting the Function into Functional Programming`` =
         // read the above as: fun love -> (fun hate -> (love - hate))
         let j = i 10
         let k = j 9
-        k |> should equal __
+        k |> should equal 1
 
     [<Test>]
     let ``11 A function can return a function (Part 2).`` () =
         let funky a b = a + b
         let j = funky 10
         let k = j 9
-        k |> should equal __
+        k |> should equal 19
 
     [<Test>]
     let ``12 You can write a function as a one-liner (Part 1).`` () =
-        (fun ___ -> fun ___ -> __ * __) __ __ |> should equal 27
+        (fun m -> fun f -> m * f) 3 9 |> should equal 27
 
     [<Test>]
     let ``13 You can write a function as a one-liner (Part 2).`` () =
-        (fun _____ ____ -> __ + __) __ __ |> should equal 17
+        (fun pie apple -> pie + apple) 7 10 |> should equal 17
 
     [<Test>]
     let ``14 'Multiple-argument' functions are one-input, one-output in disguise`` () =
       let i j k = j * k
-      let j = __ 4
-      let k = __ 12
+      let j = i 4
+      let k = j 12
       k |> should equal 48
 
     [<Test>]
@@ -108,7 +108,7 @@ module ``03: Putting the Function into Functional Programming`` =
         let f a =
             failwith "An exception will be thrown as soon as this is executed."
             a + 2
-        ___ |> should be ofType<int -> int>
+        f |> should be ofType<int -> int>
 
     [<Test>]
     let ``16 A function is executed when it is called, NOT when it is defined or referenced (Part 2).`` () =
@@ -116,14 +116,14 @@ module ``03: Putting the Function into Functional Programming`` =
             let f a =
                 failwith "An exception will be thrown as soon as this is executed."
                 a + 2
-            FILL_ME__IN |> should equal 1234
+            f |> should equal 1234
         ) |> should throw typeof<System.Exception>
 
     [<Test>]
     let ``17 Two names can be bound to the same value`` () =
         let f x = x + 2
         let y = f
-        y 20 |> should equal ___
+        y 20 |> should equal 22
 
 
     [<Test>]
@@ -131,8 +131,8 @@ module ``03: Putting the Function into Functional Programming`` =
         let a = 25
         let f () = a + 10
         let a = 99
-        a |> should equal __
-        f () |> should equal __
+        a |> should equal 99
+        f () |> should equal 35
 
     [<Test>]
     let ``19 Nesting functions`` () =
@@ -140,14 +140,14 @@ module ``03: Putting the Function into Functional Programming`` =
             let triple x = x * 3
             let addOne x = x + 1
             addOne (triple x)
-        hailstone 5 |> should equal __
+        hailstone 5 |> should equal 16
 
     [<Test>]
     let ``20 Functions have types`` () =
         let a x y = x + "cabbage" + y
         let b r = 50.0 / r
-        a |> should be ofType<FILL_ME_IN>
-        b |> should be ofType<FILL_ME_IN>
+        a |> should be ofType<string -> string -> string>
+        b |> should be ofType<float -> float>
 
 
     [<Test>]
