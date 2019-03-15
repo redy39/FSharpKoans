@@ -33,9 +33,9 @@ module ``08: The Good Kind of Discrimination`` =
         let aDegree = BSc (Linguistics, ComputerScience)
         let anotherDegree = BPharm
         let philosopherKing = Masters Philosophy
-        aDegree |> should be ofType<Subject*Subject -> UndergraduateDegree> 
+        aDegree |> should be ofType<UndergraduateDegree> 
         anotherDegree |> should be ofType<UndergraduateDegree> 
-        philosopherKing |> should be ofType<Subject -> PostgraduateDegree> 
+        philosopherKing |> should be ofType<PostgraduateDegree> 
    
     [<Test>]
     let ``02 Creating & pattern-matching a discriminated union`` () = 
@@ -73,5 +73,8 @@ module ``08: The Good Kind of Discrimination`` =
             match x with
             | Empty -> 0
             | Node (_, a, b) -> 1 + max (depth a) (depth b)
-        let a = __ // <-- you may want to spread this over multiple lines and/or let-bindings ...!
+        let d = Node ("last",Empty,Empty)
+        let c = Node ("third",Empty,d) 
+        let b = Node ("second",Empty,c)
+        let a = Node ("first",Empty,b)// <-- you may want to spread this over multiple lines and/or let-bindings ...!
         depth a |> should equal 4
