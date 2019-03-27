@@ -43,22 +43,22 @@ module ``11: Exploring types, options, and results`` =
 
     [<Test>]
     let ``01 Type annotations for function types`` () =
-        let a (x:FILL_ME_IN) (y:FILL_ME_IN) = x + y
-        let b (x:FILL_ME_IN) (y:FILL_ME_IN) = x + y
+        let a (x:string) (y:string) = x + y
+        let b (x:float) (y:float) = x + y
         a |> should be ofType<string -> string -> string>
         b |> should be ofType<float -> float -> float>
-        a __ __ |> should equal "skipping"
-        b __ __ |> should equal 1.02
+        a "skip" "ping" |> should equal "skipping"
+        b 0.9 0.12 |> should equal 1.02
 
     [<Test>]
     let ``02 We can use a type annotation for a function's output`` () =
-        let k a b : FILL_ME_IN = a * b
-        k __ __ |> should equal 15.0 
+        let k a b : float = a * b
+        k 3.0 5.0 |> should equal 15.0 
 
     [<Test>]
     let ``03 Basic Option example`` () =
-        getSurname "Taylor Swift" |> should equal __
-        getSurname "Eminem" |> should equal __
+        getSurname "Taylor Swift" |> should equal (Some "Swift")
+        getSurname "Eminem" |> should equal None
 
     // the System.Int32.TryParse, System.Double.TryParse, etc functions return
     // a tuple of bool * XYZ, where XYZ is the converted value.
@@ -66,7 +66,8 @@ module ``11: Exploring types, options, and results`` =
     let ``04 Parsing a string safely`` () =
         let parse (s:string) =
             match System.Int32.TryParse s with
-            | _ -> __ // <-- fill in the match cases
+            | false,_ -> None // <-- fill in the match cases
+            | true,a -> Some a
         parse "25" |> should equal (Some 25)
         parse "48" |> should equal (Some 48)
         parse "wut" |> should equal None
@@ -75,7 +76,8 @@ module ``11: Exploring types, options, and results`` =
     let ``05 Remapping Option values`` () =
       let f n =
          match getSurname n with
-         | _ -> __ // <-- write a bunch of good match cases
+         | None -> "[no surname]" // <-- write a bunch of good match cases
+         | Some a -> a
       f "Anubis" |> should equal "[no surname]"
       f "Niccolo Machiavelli" |> should equal "Machiavelli"
       f "Mara Jade" |> should equal "Jade"
@@ -89,10 +91,10 @@ module ``11: Exploring types, options, and results`` =
         let f n m =
             match n<0.0, m=0.0 with
             | true, _ -> Error NegativeNumberSupplied
-            | _, true -> __
-            | _ ->
+            | _, true -> Error DivisionByZero
+            | _ -> 
                 // 'sqrt' is the square-root function
-                __ (sqrt n / m)
-        f -6.0 2.5 |> should equal __
+                Ok ((sqrt n )/ m)
+        f -6.0 2.5 |> should equal (Error NegativeNumberSupplied)
         f 144.0 2.0 |> should equal (Ok 6.0)
         f 7.3 0.0 |> should equal (Error DivisionByZero)
