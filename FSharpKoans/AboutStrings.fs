@@ -12,31 +12,31 @@ module ``13: String manipulation`` =
     [<Test>]
     let ``02 Getting a substring (Part 1).`` () =
         let a = "bright"
-        a.[1..] |> should equal __
+        a.[1..] |> should equal "right"
 
     [<Test>]
     let ``03 Getting a substring (Part 2).`` () =
         let a = "bright"
-        a.[..3] |> should equal __
+        a.[..3] |> should equal "brig"
 
     [<Test>]
     let ``04 Getting a substring (Part 3).`` () =
         let a = "bright"
-        a.[1..3] |> should equal __
+        a.[1..3] |> should equal "rig"
 
     [<Test>]
     let ``05 Concatenating strings`` () =
         let a = ["hip"; "hip"; "hurray"]
-        String.FILL__ME_IN " " a |> should equal "hip hip hurray"
-        String.FILL__ME_IN __ __ |> should equal "hiphiphurray"
-        String.FILL__ME_IN __ __ |> should equal "hip! hip! hurray"
+        String.concat " " a |> should equal "hip hip hurray"
+        String.concat "" a |> should equal "hiphiphurray"
+        String.concat "! " a |> should equal "hip! hip! hurray"
 
     [<Test>]
     let ``06 Getting a string from an integer or float`` () =
         let a = 23
         let b = 17.8
-        __ a |> should equal "23"
-        __ b |> should equal "17.8"
+        string a |> should equal "23"
+        string b |> should equal "17.8"
 
     (*
         The next few tests involve the `sprintf` function, which
@@ -48,22 +48,22 @@ module ``13: String manipulation`` =
 
     [<Test>]
     let ``07 String formatting: %s format specifier`` () =
-        let result = sprintf __ "perfect"
+        let result = sprintf "%s" "Practice makes perfect."
         result |> should equal "Practice makes perfect."
 
     [<Test>]
     let ``08 String formatting: %d format specifier`` () =
-        let result = sprintf __ 9
+        let result = sprintf "%d%s" 9 " planets, Sir, endlessly circle, Sir"
         result |> should equal "9 planets, Sir, endlessly circle, Sir"
 
     [<Test>]
     let ``09 String formatting: %b format specifier`` () =
-        let result = sprintf __ true
+        let result = sprintf "%s%b%s" "It's "true", it is." 
         result |> should equal "It's true, it is."
 
     [<Test>]
     let ``10 String formatting: %c format specifier`` () =
-        let result = sprintf __ 'X'
+        let result = sprintf "%c%s" 'X' " marks the spot."
         result |> should equal "X marks the spot."
 
     // specify a precision using %.Nf, where N is an integer
@@ -71,9 +71,9 @@ module ``13: String manipulation`` =
     // The default precision is about 6, as near as I can tell.
     [<Test>]
     let ``11 String formatting: %f format specifier`` () =
-        let result = sprintf __ 2.26
-        let condensed = sprintf __ 2.26
-        let rounded = sprintf __ 2.26
+        let result = sprintf "%s%.6f%s" "Multiply by " 2.26 ", then triple"
+        let condensed = sprintf "%s%f%s" "Multiply by " 2.26 ", then triple"
+        let rounded = sprintf "%s%.1f%s" "Multiply by " 2.26 ", then triple"
         result |> should equal "Multiply by 2.260000, then triple"
         condensed |> should equal "Multiply by 2.26, then triple"
         rounded |> should equal "Multiply by 2.3, then triple"
