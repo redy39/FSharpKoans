@@ -6,8 +6,8 @@ module ``13: String manipulation`` =
     let ``01 Finding the length of a string`` () =
         let a = "calamari"
         let b = "It's-a me, Maaario!"
-        String.FILL_ME_IN a |> should equal 8
-        String.FILL_ME_IN b |> should equal 19
+        String.length a |> should equal 8
+        String.length b |> should equal 19
 
     [<Test>]
     let ``02 Getting a substring (Part 1).`` () =
