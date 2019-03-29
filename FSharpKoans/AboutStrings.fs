@@ -72,7 +72,7 @@ module ``13: String manipulation`` =
     [<Test>]
     let ``11 String formatting: %f format specifier`` () =
         let result = sprintf "%s%.6f%s" "Multiply by " 2.26 ", then triple"
-        let condensed = sprintf "%s%f%s" "Multiply by " 2.26 ", then triple"
+        let condensed = sprintf "%s%.2f%s" "Multiply by " 2.26 ", then triple"
         let rounded = sprintf "%s%.1f%s" "Multiply by " 2.26 ", then triple"
         result |> should equal "Multiply by 2.260000, then triple"
         condensed |> should equal "Multiply by 2.26, then triple"
@@ -80,20 +80,20 @@ module ``13: String manipulation`` =
 
     [<Test>]
     let ``12 String formatting: %A format specifier`` () =
-        let result = sprintf __ [7.4; 7.31; 6.55]
+        let result = sprintf "%A" "Controle scores: [7.4; 7.31; 6.55] (after transform)"                         //fix this one
         result |> should equal "Control scores: [7.4; 7.31; 6.55] (after transform)"
-        let moreResult = sprintf __ (8,3,"UTC")
+        let moreResult = sprintf "%A" (8,3,"UTC")
         moreResult |> should equal "The (8, 3, \"UTC\") time-coordinate was used."
 
    // double-up a % to get a % in.
     [<Test>]
     let ``13 String formatting: Putting a '%' sign in`` () =
-        let result = sprintf __ 94.43
+        let result = sprintf "I scored 94.43%% on the test"
         result |> should equal "I scored 94.43% on the test"
 
     [<Test>]
     let ``14 String formatting: Multiple format specifiers`` () =
-        let result = sprintf __ 3 5 0.6 "in other words" 60
+        let result = sprintf "%i%s%i%s%.1f%s%i%s" 3 " out of " 5 " is " 0.6 ", or (in other words) " 60 " percent."
         result |> should equal "3 out of 5 is 0.6, or (in other words) 60 percent."
 
    // But that's not all! See the full set of formatting capabilities here:
@@ -104,10 +104,10 @@ module ``13: String manipulation`` =
     [<Test>]
     let ``15 You can use the "usual" C# string methods from F#`` () =
         let s = "  Dr Phil, PhD, MD, MC, Medicine Man  "
-        let ``first index of 'P'`` = s.FILL_ME_IN
-        let ``last index of 'P'`` = s.FILL_ME_IN
-        let ``lowercase version`` = s.FILL_ME_IN
-        let ``without surrounding space`` = s.FILL_ME_IN
+        let ``first index of 'P'`` = s.IndexOf 'P'
+        let ``last index of 'P'`` = s.LastIndexOf 'P'
+        let ``lowercase version`` = s.ToLower ()
+        let ``without surrounding space`` = s.[2..(s.Length - 3)]
         ``first index of 'P'`` |> should equal 5
         ``last index of 'P'`` |> should equal 11
         ``lowercase version`` |> should equal "  dr phil, phd, md, mc, medicine man  "

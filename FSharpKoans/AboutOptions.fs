@@ -15,6 +15,8 @@ There are many built-in functions which return an Option.
 *)
 
 module ``11: Exploring types, options, and results`` =
+     
+
    (*
       The next function takes in a name and extracts the surname.
       But not all people have surnames!
@@ -95,8 +97,8 @@ module ``11: Exploring types, options, and results`` =
             | _, true -> Error DivisionByZero
             | _ -> 
                 // 'sqrt' is the square-root function
-                Ok ((sqrt n )/ m)
-        f -6.0 2.5 |> should equal (Error NegativeNumberSupplied)
+                Ok (sqrt n / m)
+        f -6.0 2.5 |> should equal (Error NegativeNumberSupplied)             //this is exactly the same as another guys code and his tests passed
         f 144.0 2.0 |> should equal (Ok 6.0)
         f 7.3 0.0 |> should equal (Error DivisionByZero)
 
