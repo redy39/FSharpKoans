@@ -80,7 +80,7 @@ module ``13: String manipulation`` =
 
     [<Test>]
     let ``12 String formatting: %A format specifier`` () =
-        let result = sprintf "%A" "Controle scores: [7.4; 7.31; 6.55] (after transform)"                         //fix this one
+        let result = sprintf "%A Control scores: [7.4; 7.31; 6.55] (after transform)"                         //fix this one
         result |> should equal "Control scores: [7.4; 7.31; 6.55] (after transform)"
         let moreResult = sprintf "%A" (8,3,"UTC")
         moreResult |> should equal "The (8, 3, \"UTC\") time-coordinate was used."
