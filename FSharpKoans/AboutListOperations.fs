@@ -333,8 +333,14 @@ or something else), it's likely that you'll be able to use a fold.
     // List.tryPick
     [<Test>]
     let ``22 tryPick: find the first matching element, if any, and transform it`` () =
-        let tryPick (p : 'a -> 'b option) (xs : 'a list) : 'b option =
-            __ // Does this: https://msdn.microsoft.com/en-us/library/ee353814.aspx
+        let tryPick (p : 'a -> 'b option) (xs : 'a list) : 'b option = // Does this: https://msdn.microsoft.com/en-us/library/ee353814.aspx
+         let rec pullAndApp f lst = 
+          match lst with 
+          |h::t -> match (h|>f) with 
+                   |Some _ -> h|>f
+                   |None -> pullAndApp f t
+          |_ -> None
+         pullAndApp p xs
         let f x =
             match x<=45 with
             | true -> Some(x*2)
@@ -363,8 +369,8 @@ or something else), it's likely that you'll be able to use a fold.
         // Think about this: why does the signature of `choose` have to be like this?
         // - why can't it take an 'a->'b, instead of an 'a->'b option ?
         // - why does it return a 'b list, and not a 'b list option ?
-        let choose (p : 'a -> 'b option) (xs : 'a list) : 'b list =
-            __ // Does this: https://msdn.microsoft.com/en-us/library/ee353456.aspx
+        let choose (p : 'a -> 'b option) (xs : 'a list) : 'b list = __// Does this: https://msdn.microsoft.com/en-us/library/ee353456.aspx
+         
         let f x =
             match x<=45 with
             | true -> Some(x*2)
@@ -381,8 +387,8 @@ or something else), it's likely that you'll be able to use a fold.
 
     [<Test>]
     let ``24 mapi: like map, but passes along an item index as well`` () =
-        let mapi (f : int -> 'a -> 'b) (xs : 'a list) : 'b list =
-            __ // Does this: https://msdn.microsoft.com/en-us/library/ee353425.aspx
+        let mapi (f : int -> 'a -> 'b) (xs : 'a list) : 'b list =__ // Does this: https://msdn.microsoft.com/en-us/library/ee353425.aspx
+         
         mapi (fun i x -> -i, x+1) [9;8;7;6] |> should equal [0,10; -1,9; -2,8; -3,7]
         let hailstone i t =
             match i%2 with
