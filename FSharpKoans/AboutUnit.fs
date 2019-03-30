@@ -5,15 +5,15 @@ module ``15: Advanced techniques`` =
     [<Test>]
     let ``01 Unit is used when there is no return value for a function``() = 
         let sendData data = () //<-- a function which is invoked for its side-effect(s)
-        sendData "data" |> should equal ___ // ... don't overthink this one!
+        sendData "data" |> should equal () // ... don't overthink this one!
    
     [<Test>]
     let ``02 Unit, as an input, conveys no data`` () = 
         let sayHello () = "hello"
         let result = sayHello ()
-        sayHello |> should be ofType<FILL_ME_IN>
-        sayHello () |> should be ofType<FILL_ME_IN>
-        sayHello () |> should equal __
+        sayHello |> should be ofType<unit -> string>
+        sayHello () |> should be ofType<string>
+        sayHello () |> should equal "hello"
 
 (*
     When we develop real systems, we often run into problems
@@ -53,14 +53,14 @@ module ``15: Advanced techniques`` =
             match p < List.length scrollPositions && p >= 0 with
             | true -> scrollPositions.[p]
             | _ -> fun () -> "Nothing to do"
-        scrollPositions |> should be ofType<FILL_ME_IN>
-        getWorkAtPosition |> should be ofType<FILL_ME_IN>
-        getWorkAtPosition 3 |> should be ofType<FILL_ME_IN>
-        (getWorkAtPosition 3) () |> should be ofType<FILL_ME_IN>
-        getWorkAtPosition 250 |> should be ofType<FILL_ME_IN>
-        (getWorkAtPosition 250) () |> should be ofType<FILL_ME_IN>
-        (getWorkAtPosition 5) () |> should equal __
-        (getWorkAtPosition -7) () |> should equal __
+        scrollPositions |> should be ofType<(unit -> string) list>
+        getWorkAtPosition |> should be ofType<int -> unit -> string>
+        getWorkAtPosition 3 |> should be ofType<unit -> string>
+        (getWorkAtPosition 3) () |> should be ofType<string>
+        getWorkAtPosition 250 |> should be ofType<unit -> string>
+        (getWorkAtPosition 250) () |> should be ofType<string>
+        (getWorkAtPosition 5) () |> should equal "Load video"
+        (getWorkAtPosition -7) () |> should equal "Nothing to do"
 
     (*
         Sometimes we want to do something purely for a side-effect
@@ -74,9 +74,9 @@ module ``15: Advanced techniques`` =
         let doSomethingForTheSideEffect x =
             // ...perform side effect...
             x // return x
-        doSomethingForTheSideEffect 5 |> should equal __
-        ignore (doSomethingForTheSideEffect "blorp") |> should equal __
-        doSomethingForTheSideEffect 19.66 |> ignore |> should equal __
+        doSomethingForTheSideEffect 5 |> should equal 5
+        ignore (doSomethingForTheSideEffect "blorp") |> should equal ()
+        doSomethingForTheSideEffect 19.66 |> ignore |> should equal ()
 
     [<Test>]
     let ``05 Partially specifying arguments (Part 1).`` () =
@@ -84,15 +84,15 @@ module ``15: Advanced techniques`` =
         // reuse functionality.  This technique is exceptionally flexible and often
         // seen in functional code, so you should try to understand it fully.
         let f animal noise = animal + " says " + noise
-        let kittehs = __ "cat"
-        __ "nyan" |> should equal "cat says nyan"
+        let kittehs = f "cat"
+        kittehs "nyan" |> should equal "cat says nyan"
 
     [<Test>]
     let ``06 Partially specifying arguments (Part 2).`` () =
         // as above, but what do you do when the arguments aren't in the order
         // that you want them to be in?
         let f animal noise = animal + " says " + noise
-        let howl k = __ // <- multiple words on this line.  You MUST use `f`.
+        let howl k = "slash/crunch/snap"|>f k // <- multiple words on this line.  You MUST use `f`.
         howl "dire wolf" |> should equal "dire wolf says slash/crunch/snap"
         howl "direr wolf" |> should equal "direr wolf says slash/crunch/snap"
 
@@ -101,7 +101,7 @@ module ``15: Advanced techniques`` =
         // Extending a bit more, what do you do when you want to apply a function,
         // but modify the result before you give it back?
         let f animal noise = animal + " says " + noise
-        let cows = __ // <-- multiple words on this line, or you may want to make this a multi-line thing.  You MUST use `f`.
+        let cows n = (n + ", de gozaru")|>f "cow"  // <-- multiple words on this line, or you may want to make this a multi-line thing.  You MUST use `f`.
         cows "moo" |> should equal "cow says moo, de gozaru"
         cows "MOOooOO" |> should equal "cow says MOOooOO, de gozaru"
 
@@ -111,8 +111,8 @@ module ``15: Advanced techniques`` =
             let middle = (final - initial) / 2
             fun t -> t-middle, t+middle
         // note the number of inputs provided below.  Do you see why I can do this?
-        calculate 10 20 5 |> should equal __
-        calculate 0 600 250 |> should equal __
+        calculate 10 20 5 |> should equal (0,10)
+        calculate 0 600 250 |> should equal (-50,550)
 
     [<Test>]
     let ``09 Using a value defined in an inner scope`` () =
@@ -123,6 +123,6 @@ module ``15: Advanced techniques`` =
                 | 0 -> 10
                 | 1 -> 65
             fun x -> result - x
-        g 5 8 |> should equal __
-        g 8 5 |> should equal __
+        g 5 8 |> should equal 57
+        g 8 5 |> should equal 5
         // PS. I hope this one brought you some closure.

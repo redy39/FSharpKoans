@@ -319,8 +319,14 @@ or something else), it's likely that you'll be able to use a fold.
     // List.tryFind
     [<Test>]
     let ``21 tryFind: find the first matching element, if any`` () =
-        let tryFind (p : 'a -> bool) (xs : 'a list) : 'a option =
-            __ // Does this: https://msdn.microsoft.com/en-us/library/ee353506.aspx
+        let tryFind (p : 'a -> bool) (xs : 'a list) : 'a option = // Does this: https://msdn.microsoft.com/en-us/library/ee353506.aspx
+         let rec find f lst =
+          match lst with 
+          |h::t -> match (h|>f) with 
+                   |true -> Some h 
+                   |false -> find f t
+          |_ -> None 
+         find p xs 
         tryFind (fun x -> x<=45) [100;85;25;55;6] |> should equal (Some 25)
         tryFind (fun x -> x>450) [100;85;25;55;6] |> should equal None
 
